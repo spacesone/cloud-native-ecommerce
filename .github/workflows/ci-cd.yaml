@@ -96,28 +96,25 @@ jobs:
 
       - name: run ls
         run: |
-          ls infra/k
-          pwd
+      - name: Install yq
+        run: |
+          sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
 
-    #   - name: Install yq
-    #     run: |
-    #       sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
-    #       sudo chmod +x /usr/local/bin/yq
+      - name: Update image tags in manifests
+        run: |
+          cd infra/k8s
+          SERVICES=("product" "order" "inventory")
+          for SERVICE in "${SERVICES[@]}"; do
+            DEPLOY_PATH="${SERVICE}/deployment.yaml"
+            echo "Updating $DEPLOY_PATH with new image tag..."
+            yq -i ".spec.template.spec.containers[0].image = \"$DOCKER_HUB_USERNAME/${SERVICE}-service:$IMAGE_TAG\"" "$DEPLOY_PATH"
+          done
 
-    #   - name: Update image tags in manifests
-    #     run: |
-    #       cd infra/k8s
-    #       SERVICES=("product" "order" "inventory")
-    #       for SERVICE in "${SERVICES[@]}"; do
-    #         DEPLOY_PATH="${SERVICE}/deployment.yaml"
-    #         echo "Updating $DEPLOY_PATH with new image tag..."
-    #         yq -i ".spec.template.spec.containers[0].image = \"$DOCKER_HUB_USERNAME/${SERVICE}-service:$IMAGE_TAG\"" "$DEPLOY_PATH"
-    #       done
-
-    #   - name: Commit and push changes
-    #     run: |
-    #       cd infra
-    #       git add k8s/*/deployment.yaml
-    #       git commit -m "Update image tags to $IMAGE_TAG"
-    #       git push origin $INFRA_BRANCH
+      - name: Commit and push changes
+        run: |
+          cd infra
+          git add k8s/*/deployment.yaml
+          git commit -m "Update image tags to $IMAGE_TAG"
+          git push origin $INFRA_BRANCH
 
