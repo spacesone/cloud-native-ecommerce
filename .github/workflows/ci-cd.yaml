@@ -104,6 +104,7 @@ jobs:
         - name: Update image tags in k8s manifests
           run: |
             cd infra/k8s
+            pwd
             SERVICES=("product-service" "order-service" "inventory-service")
 
             for SERVICE in "${SERVICES[@]}"; do
