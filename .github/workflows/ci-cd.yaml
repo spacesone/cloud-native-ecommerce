@@ -6,7 +6,7 @@ on:
 
 env:
   DOCKER_HUB_USERNAME: olymahmudmugdho
-  IMAGE_TAG: ${{ github.sha }}
+  IMAGE_TAG: demo
   INFRA_REPO: https://github.com/spacesone/cne-k8s-manifests.git
   INFRA_BRANCH: main
 
