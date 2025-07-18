@@ -45,6 +45,7 @@ jobs:
 
           echo ">> Running make build"
           cd ../inventory-service
+          go mod tidy
           make build
 
           echo ">> Building Docker image"
