@@ -103,8 +103,8 @@ jobs:
 
         - name: Update image tags in k8s manifests
           run: |
-            cd k8s
             pwd
+            cd k8s
             SERVICES=("product-service" "order-service" "inventory-service")
 
             for SERVICE in "${SERVICES[@]}"; do
