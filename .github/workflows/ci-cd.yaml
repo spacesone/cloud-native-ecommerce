@@ -84,9 +84,7 @@ jobs:
     steps:
         - name: Move
           run: |
-            cd ~
-            git config user.name "spacesone"
-            git config user.email "spacesone1@proton.me"
+            cd /home/runner/work/
         
         - name: Checkout infra repo
           uses: actions/checkout@v4
