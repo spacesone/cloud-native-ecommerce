@@ -88,7 +88,6 @@ jobs:
           repository: spacesone/cne-k8s-manifests
           ref: ${{ env.INFRA_BRANCH }}
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          path: infra
 
       - name: Set up Git
         run: |
@@ -97,7 +96,7 @@ jobs:
 
       - name: run ls
         run: |
-          ls infra
+          ls infra/k
           pwd
 
     #   - name: Install yq
