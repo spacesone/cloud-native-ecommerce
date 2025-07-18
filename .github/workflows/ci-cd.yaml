@@ -98,7 +98,7 @@ jobs:
 
         - name: Configure Git user
           run: |
-            cd infra
+            cd cne-k8s-manifests
             git config user.name "spacesone"
             git config user.email "spacesone1@proton.me"
 
@@ -109,7 +109,7 @@ jobs:
 
         - name: Update image tags in k8s manifests
           run: |
-            cd k8s
+            cd infra/k8s
             SERVICES=("product-service" "order-service" "inventory-service")
 
             for SERVICE in "${SERVICES[@]}"; do
