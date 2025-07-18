@@ -95,25 +95,30 @@ jobs:
           git config --global user.name "spacesone"
           git config --global user.email "spacesone1@proton.me"
 
-      - name: Install yq
+      - name: run ls
         run: |
-          sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
-          sudo chmod +x /usr/local/bin/yq
+          ls
+          pwd
 
-      - name: Update image tags in manifests
-        run: |
-          cd infra/k8s
-          SERVICES=("product" "order" "inventory")
-          for SERVICE in "${SERVICES[@]}"; do
-            DEPLOY_PATH="${SERVICE}/deployment.yaml"
-            echo "Updating $DEPLOY_PATH with new image tag..."
-            yq -i ".spec.template.spec.containers[0].image = \"$DOCKER_HUB_USERNAME/${SERVICE}-service:$IMAGE_TAG\"" "$DEPLOY_PATH"
-          done
+    #   - name: Install yq
+    #     run: |
+    #       sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+    #       sudo chmod +x /usr/local/bin/yq
 
-      - name: Commit and push changes
-        run: |
-          cd infra
-          git add k8s/*/deployment.yaml
-          git commit -m "Update image tags to $IMAGE_TAG"
-          git push origin $INFRA_BRANCH
+    #   - name: Update image tags in manifests
+    #     run: |
+    #       cd infra/k8s
+    #       SERVICES=("product" "order" "inventory")
+    #       for SERVICE in "${SERVICES[@]}"; do
+    #         DEPLOY_PATH="${SERVICE}/deployment.yaml"
+    #         echo "Updating $DEPLOY_PATH with new image tag..."
+    #         yq -i ".spec.template.spec.containers[0].image = \"$DOCKER_HUB_USERNAME/${SERVICE}-service:$IMAGE_TAG\"" "$DEPLOY_PATH"
+    #       done
+
+    #   - name: Commit and push changes
+    #     run: |
+    #       cd infra
+    #       git add k8s/*/deployment.yaml
+    #       git commit -m "Update image tags to $IMAGE_TAG"
+    #       git push origin $INFRA_BRANCH
 
