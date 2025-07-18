@@ -92,6 +92,7 @@ jobs:
 
         - name: Configure Git user
           run: |
+            cd infra
             git config user.name "spacesone"
             git config user.email "spacesone1@proton.me"
 
