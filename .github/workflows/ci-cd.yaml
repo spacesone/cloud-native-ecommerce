@@ -82,42 +82,38 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-        - name: Move
-          run: |
-            cd /home/runner/work/
-        
-        - name: Checkout infra repo
-          uses: actions/checkout@v4
-          with:
-            repository: spacesone/cne-k8s-manifests
-            ref: ${{ env.INFRA_BRANCH }}
-            token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-            path: infra
+      - name: Checkout k8s manifest repo
+        uses: actions/checkout@v4
+        with:
+          repository: spacesone/cne-k8s-manifests
+          ref: ${{ env.INFRA_BRANCH }}
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          path: infra
 
-        - name: Configure Git user
-          run: |
-            ls /home/runner/work/
-            git config user.name "spacesone"
-            git config user.email "spacesone1@proton.me"
+      - name: Set up Git
+        run: |
+          git config --global user.name "spacesone"
+          git config --global user.email "spacesone1@proton.me"
 
-        - name: Install yq (YAML CLI tool)
-          run: |
-            sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
-            sudo chmod +x /usr/local/bin/yq
+      - name: Install yq
+        run: |
+          sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+          sudo chmod +x /usr/local/bin/yq
 
-        - name: Update image tags in k8s manifests
-          run: |
-            cd infra/k8s
-            SERVICES=("product-service" "order-service" "inventory-service")
+      - name: Update image tags in manifests
+        run: |
+          cd infra/k8s
+          SERVICES=("product" "order" "inventory")
+          for SERVICE in "${SERVICES[@]}"; do
+            DEPLOY_PATH="${SERVICE}/deployment.yaml"
+            echo "Updating $DEPLOY_PATH with new image tag..."
+            yq -i ".spec.template.spec.containers[0].image = \"$DOCKER_HUB_USERNAME/${SERVICE}-service:$IMAGE_TAG\"" "$DEPLOY_PATH"
+          done
 
-            for SERVICE in "${SERVICES[@]}"; do
-            FILE="${SERVICE}-deployment.yaml"
-            echo "Updating $FILE with image tag $IMAGE_TAG"
-            yq -i ".spec.template.spec.containers[0].image = \"$DOCKER_HUB_USERNAME/$SERVICE:$IMAGE_TAG\"" "$FILE"
-            done
+      - name: Commit and push changes
+        run: |
+          cd infra
+          git add k8s/*/deployment.yaml
+          git commit -m "Update image tags to $IMAGE_TAG"
+          git push origin $INFRA_BRANCH
 
-        - name: Commit & push updated manifests
-          run: |
-            git add k8s/*.yaml
-            git commit -m "Update image tags to $IMAGE_TAG"
-            git push origin $INFRA_BRANCH
