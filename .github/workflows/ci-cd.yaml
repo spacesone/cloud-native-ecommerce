@@ -96,7 +96,7 @@ jobs:
 
         - name: Configure Git user
           run: |
-            pwd
+            ls /home/runner/work/
             git config user.name "spacesone"
             git config user.email "spacesone1@proton.me"
 
