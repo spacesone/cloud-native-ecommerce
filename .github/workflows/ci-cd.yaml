@@ -97,7 +97,7 @@ jobs:
 
       - name: run ls
         run: |
-          ls
+          ls infra
           pwd
 
     #   - name: Install yq
