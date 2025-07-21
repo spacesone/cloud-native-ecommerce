@@ -125,8 +125,6 @@ jobs:
           sed -i "s|CART_DB_URI: .*|CART_DB_URI: jdbc:postgresql://${{ secrets.SQL_INSTANCE_EXTERNAL_IP }}:5432/cart_db|" infra/k8s/configmap.yaml
           sed -i "s|ORDER_DB_URI: .*|ORDER_DB_URI: jdbc:postgresql://${{ secrets.SQL_INSTANCE_EXTERNAL_IP }}:5432/order_db|" infra/k8s/configmap.yaml
           sed -i "s|REDIS_HOST: .*|REDIS_HOST: ${{ secrets.REDIS_KAFKA_VM_IP }}|" infra/k8s/configmap.yaml
-          sed -i "s|JWT_ISSUER_URI: .*|JWT_ISSUER_URI: http://${{ secrets.KEYCLOAK_IP }}:8080/realms/cloud-native-ecommerce|" infra/k8s/configmap.yaml
-          sed -i "s|JWT_SET_URI: .*|JWT_SET_URI: http://${{ secrets.KEYCLOAK_IP }}:8080/realms/cloud-native-ecommerce/protocol/openid-connect/certs|" infra/k8s/configmap.yaml
 
       - name: Commit and push changes
         run: |
