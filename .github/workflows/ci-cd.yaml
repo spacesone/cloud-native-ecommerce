@@ -41,7 +41,7 @@ jobs:
             --build-arg VITE_PUBLIC_API_URL=http://${{ secrets.LB_IP }} \
             --build-arg VITE_PRODUCT_API_URL=http://${{ secrets.LB_IP }} \
             --build-arg VITE_ORDER_API_URL=http://${{ secrets.LB_IP }} \
-            --build-arg VITE_KEYCLOAK_URL=http://${{ secrets.KEYCLOAK_IP }}:8080 \
+            --build-arg VITE_KEYCLOAK_URL=${{ secrets.KEYCLOAK_URL }} \
             --build-arg VITE_REALM=cloud-native-ecommerce \
             --build-arg VITE_CLIENT_ID=react-app \
             -t $DOCKER_HUB_USERNAME/cne-ecommerce-ui:$IMAGE_TAG .
