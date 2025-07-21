@@ -109,7 +109,7 @@ jobs:
             DEPLOY_PATH="${SERVICE}/deployment.yaml"
             echo "Updating $DEPLOY_PATH with new image tag..."
             IMAGE_NAME="$DOCKER_HUB_USERNAME"
-            if [ "$SERVICE" = "ecommerce" ]; then
+            if [ "$SERVICE" = "ecommerce-ui" ]; then
               IMAGE_NAME+="/cne-ecommerce-ui"
             else
               IMAGE_NAME+="/${SERVICE}-service"

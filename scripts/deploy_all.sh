@@ -2,6 +2,7 @@
 
 nohup ./install_linux_packages.sh > install.log 2>&1 &
 cd ../infrastructure
+GOOGLE_CLOUD_KEYFILE_JSON=account.json
 ./reset_tf.sh
 ./run.sh
 cd ../ansible
