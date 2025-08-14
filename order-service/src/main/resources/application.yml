@@ -1,0 +1,2 @@
+api:
+  key: ${API_KEY:your-default-api-key-here}  # Set this via environment variable in production
